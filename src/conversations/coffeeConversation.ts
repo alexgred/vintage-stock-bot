@@ -1,4 +1,4 @@
-import { BotContext, BotConversation } from '@/types';
+import { BotContext, BotConversation, Order } from '@/types';
 import { Keyboard } from 'grammy';
 
 export async function coffeeConversation(
@@ -39,5 +39,17 @@ export async function coffeeConversation(
 
   await ctx.reply(message);
 
-  console.log(coffee);
+  if (coffee?.text && time?.text) {
+    const data: Order = {
+      id: coffee.date + time.date,
+      name: coffee.text,
+      user: `https://t.me/${coffee?.from?.username}`,
+      price: 0,
+      timestamp: Date.now(),
+      minutes: Number(time?.text),
+      done: false,
+    };
+
+    console.log(data);
+  }
 }
