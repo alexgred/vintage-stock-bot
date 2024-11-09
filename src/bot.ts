@@ -16,6 +16,10 @@ export class VintageStockBot {
       command: '/help',
       description: 'Get help',
     },
+    {
+      command: '/coffee',
+      description: 'Order coffee',
+    },
   ];
 
   constructor(private readonly config: Config) {
