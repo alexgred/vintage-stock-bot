@@ -15,6 +15,7 @@
     "typescript",
     "bot"
   ],
+  "private": true,
   "author": "",
   "license": "MIT",
   "devDependencies": {
