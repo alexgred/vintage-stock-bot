@@ -10,6 +10,7 @@ export interface notificationOther {
 export interface Order {
   id: number;
   name: string;
+  userId: number;
   user: string | undefined;
   price: number;
   timestamp: number;

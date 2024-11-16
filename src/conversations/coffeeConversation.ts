@@ -53,10 +53,12 @@ export async function coffeeConversation(
   }
 
   if (coffee?.text && time?.text) {
+    console.log('1');
     const data: Order = {
       id: coffee.date + time.date,
       name: coffee.text,
-      user: coffee.from?.username,
+      userId: ctx.from?.id as number,
+      user: coffee.from.username,
       price: coffees.find((c) => c.label === coffee.text)?.value || -1,
       timestamp: Date.now(),
       minutes: times.find((c) => c.label === time.text)?.value || -1,
@@ -64,8 +66,9 @@ export async function coffeeConversation(
     };
 
     await conversation.external(() =>
-      axios.post('http://localhost:3000/api/orders/add', data),
+      axios.post('http://localhost:3000/api/orders/add', data).catch((error) => { console.log(error) }),
     );
+
     await ctx.reply(message, {
       reply_markup: { remove_keyboard: true },
     });
