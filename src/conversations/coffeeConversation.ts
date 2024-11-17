@@ -1,7 +1,7 @@
 import { BotContext, BotConversation, Order } from '@/types';
 import axios from 'axios';
 import { Keyboard } from 'grammy';
-import { coffees, times } from '../config';
+import { coffees, times, url } from '../config';
 
 export async function coffeeConversation(
   conversation: BotConversation,
@@ -53,7 +53,6 @@ export async function coffeeConversation(
   }
 
   if (coffee?.text && time?.text) {
-    console.log('1');
     const data: Order = {
       id: coffee.date + time.date,
       name: coffee.text,
@@ -66,7 +65,9 @@ export async function coffeeConversation(
     };
 
     await conversation.external(() =>
-      axios.post('http://localhost:3000/api/orders/add', data).catch((error) => { console.log(error) }),
+      axios.post(url, data).catch((error) => {
+        console.log(error);
+      }),
     );
 
     await ctx.reply(message, {
