@@ -3,16 +3,22 @@
     "strict": true,
     "target": "esnext",
     "allowJs": true,
-    "moduleResolution": "node",
-    "module": "commonjs",
+    "moduleResolution": "nodenext",
+    "module": "NodeNext",
+    "esModuleInterop": true,
     "skipLibCheck": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "outDir": "./dist",
     "lib": ["esnext", "dom"],
     "resolveJsonModule": true,
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "plugins": [
+      { "transform": "typescript-transform-paths" },
+      { "transform": "typescript-transform-paths", "afterDeclarations": true }
+    ],
   },
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
