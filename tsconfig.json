@@ -7,12 +7,12 @@
     "module": "commonjs",
     "skipLibCheck": true,
     "sourceMap": true,
-    "outDir": "public",
+    "outDir": "./dist",
     "lib": ["esnext", "dom"],
     "resolveJsonModule": true,
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }
