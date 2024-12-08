@@ -11,6 +11,7 @@ export async function coffeeConversation(
   coffees.forEach((coffee) => {
     buttonsCoffee.text(coffee.label, coffee.data);
   });
+  buttonsCoffee.text('Отмена', 'cancel');
   const keyboardCoffee = buttonsCoffee.toFlowed(2);
   await ctx.reply('Какой вам кофе?', {
     reply_markup: keyboardCoffee,
@@ -32,6 +33,7 @@ export async function coffeeConversation(
   times.forEach((time) => {
     buttonsTime.text(time.label, time.data);
   });
+  buttonsTime.text('Отмена', 'cancel');
   const keyboardTime = buttonsTime.toFlowed(2);
   await ctx.reply('Через сколько вы будет?', {
     reply_markup: keyboardTime,
@@ -39,14 +41,15 @@ export async function coffeeConversation(
 
   const { callbackQuery: time } = await conversation.waitForCallbackQuery(
     times.map((time) => time.data),
-    (ctx) => {
-      return ctx.reply('Вы не указали через сколько вы будет?', {
-        reply_markup: keyboardCoffee,
-      });
+    {
+      drop: true,
+      otherwise:(ctx) => {
+        return ctx.reply('Вы не указали через сколько вы будет?', {
+          reply_markup: keyboardTime,
+        });
+      }
     },
   );
-
-
 
   const name = coffees.find((c) => c.data === coffee.data)?.label;
   const minutes = times.find((c) => c.data === time.data)?.label;
@@ -65,7 +68,7 @@ export async function coffeeConversation(
       userId: ctx.from?.id as number,
       user: coffee.from.username,
       price: coffees.find((c) => c.data === name)?.value || -1,
-      timestamp: Date.now(),
+      timestamp: await conversation.now(),
       minutes: times.find((c) => c.data === minutes)?.value || -1,
       done: false,
     };

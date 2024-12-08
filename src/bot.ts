@@ -1,5 +1,5 @@
 import { Bot, GrammyError, HttpError, session } from 'grammy';
-import { helpComposer, startComposer, callbackComposer, coffeeComposer } from '@/composers';
+import { helpComposer, startComposer, callbackComposer, coffeeComposer, conversationCallbackComposer } from '@/composers';
 import { BotContext, notificationOther, Config } from '@/types';
 import { conversations, createConversation } from '@grammyjs/conversations';
 import { coffeeConversation } from '@/conversations';
@@ -26,14 +26,18 @@ export class VintageStockBot {
     this.bot = new Bot<BotContext>(this.config.get('BOT_TOKEN'));
 
     this.bot.use(session({ initial: () => ({}) }));
-    this.bot.use(conversations());
 
-    this.bot.use(createConversation(coffeeConversation));
-
+    this.setConversation();
     this.setCallbacks();
     this.setCommands();
 
     this.setErrorHandler();
+  }
+
+  private setConversation(): void {
+    this.bot.use(conversations());
+    this.bot.use(conversationCallbackComposer);
+    this.bot.use(createConversation(coffeeConversation));
   }
 
   private setCallbacks(): void {

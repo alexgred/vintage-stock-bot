@@ -33,7 +33,6 @@ callbackComposer.callbackQuery('coffee', async (ctx) => {
   await ctx.conversation.enter('coffeeConversation');
 });
 
-
 callbackComposer.on('callback_query:data', async (ctx) => {
   await ctx.answerCallbackQuery();
 });

@@ -4,6 +4,7 @@ import { BotContext } from '@/types';
 const coffeeComposer = new Composer<BotContext>();
 
 coffeeComposer.command('coffee', async (ctx) => {
+  await ctx.conversation.exit();
   await ctx.conversation.enter('coffeeConversation');
 });
 
