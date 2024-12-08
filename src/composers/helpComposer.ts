@@ -6,8 +6,8 @@ const helpComposer = new Composer<BotContext>();
 
 helpComposer.command('help', async (ctx) => {
   const message = 'Чем я могу помочь?';
-  const keyboard = new InlineKeyboard();
 
+  const keyboard = new InlineKeyboard();
   keyboard.text('Команды', 'commands');
   keyboard.text('Адрес', 'address');
   keyboard.text('Как заказать кофе?', 'coffee');

@@ -4,44 +4,52 @@
     {
       "id": 1,
       "label": "Раф",
-      "value": 100
+      "value": 100,
+      "data": "raf"
     },
     {
       "id": 2,
       "label": "Капучино",
-      "value": 200
+      "value": 200,
+      "data": "cappuccino"
     },
     {
       "id": 3,
       "label": "Латте",
-      "value": 300
+      "value": 300,
+      "data": "latte"
     },
     {
       "id": 4,
       "label": "Американо",
-      "value": 400
+      "value": 400,
+      "data": "americano"
     }
   ],
   "times": [
     {
       "id": 1,
       "label": "Я в магазине",
-      "value": 0
+      "value": 0,
+      "data": "time-0"
     },
     {
       "id": 2,
       "label": "15 минут",
-      "value": 15
+      "value": 15,
+      "data": "time-15"
     },
     {
       "id": 3,
       "label": "30 минут",
-      "value": 30
+      "value": 30,
+      "data": "time-30"
     },
     {
       "id": 4,
       "label": "45 минут",
-      "value": 45
+      "value": 45,
+      "data": "time-45"
     }
   ]
 }
