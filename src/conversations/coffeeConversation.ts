@@ -1,41 +1,44 @@
 import { BotContext, BotConversation, Order } from '@/types';
 import axios from 'axios';
-import { Keyboard } from 'grammy';
+import { InlineKeyboard } from 'grammy';
 import { coffees, times, url } from '../config';
 
 export async function coffeeConversation(
   conversation: BotConversation,
   ctx: BotContext,
 ) {
-  const buttonsCoffee = new Keyboard();
+  const buttonsCoffee = new InlineKeyboard();
   coffees.forEach((coffee) => {
-    buttonsCoffee.text(coffee.label);
+    buttonsCoffee.text(coffee.label, coffee.data);
   });
-  const keyboardCoffee = buttonsCoffee.resized().oneTime().toFlowed(2);
+  const keyboardCoffee = buttonsCoffee.toFlowed(2);
   await ctx.reply('Какой вам кофе?', {
     reply_markup: keyboardCoffee,
   });
 
-  const { message: coffee } = await conversation.waitForHears(
-    coffees.map((coffee) => coffee.label),
-    (ctx) => {
-      return ctx.reply('Вы не выбрали какой вам кофе.', {
-        reply_markup: keyboardCoffee,
-      });
+  const { callbackQuery: coffee }  = await conversation.waitForCallbackQuery(
+    coffees.map((coffee) => coffee.data),
+    {
+      drop: true,
+      otherwise: async (ctx) => {
+        return ctx.reply('Вы не выбрали какой вам кофе.', {
+          reply_markup: keyboardCoffee,
+        });
+      },
     },
   );
 
-  const buttonsTime = new Keyboard();
+  const buttonsTime = new InlineKeyboard();
   times.forEach((time) => {
-    buttonsTime.text(time.label);
+    buttonsTime.text(time.label, time.data);
   });
-  const keyboardTime = buttonsTime.resized().oneTime().toFlowed(2);
+  const keyboardTime = buttonsTime.toFlowed(2);
   await ctx.reply('Через сколько вы будет?', {
     reply_markup: keyboardTime,
   });
 
-  const { message: time } = await conversation.waitFor(
-    'message:text',
+  const { callbackQuery: time } = await conversation.waitForCallbackQuery(
+    times.map((time) => time.data),
     (ctx) => {
       return ctx.reply('Вы не указали через сколько вы будет?', {
         reply_markup: keyboardCoffee,
@@ -43,26 +46,31 @@ export async function coffeeConversation(
     },
   );
 
+
+
+  const name = coffees.find((c) => c.data === coffee.data)?.label;
+  const minutes = times.find((c) => c.data === time.data)?.label;
+
   let message = '';
-  if (time?.text === 'Я в магазине') {
-    message = `Готовим ваш ${coffee?.text?.toLocaleLowerCase()}. Пришлем уведомление, когда он будет готов.`;
+  if (minutes === 'Я в магазине') {
+    message = `Готовим ваш ${name?.toLocaleLowerCase()}. Пришлем уведомление, когда он будет готов.`;
   } else {
-    message = `Ваш ${coffee?.text?.toLocaleLowerCase()} будет готов через ${
-      time?.text
-    }. Спасибо ждем вас!`;
+    message = `Ваш ${name?.toLocaleLowerCase()} будет готов через ${minutes}. Спасибо ждем вас!`;
   }
 
-  if (coffee?.text && time?.text) {
+  if (coffee.message && time?.message && name) {
     const data: Order = {
-      id: coffee.date + time.date,
-      name: coffee.text,
+      id: coffee.message.date + time.message.date,
+      name: name,
       userId: ctx.from?.id as number,
       user: coffee.from.username,
-      price: coffees.find((c) => c.label === coffee.text)?.value || -1,
+      price: coffees.find((c) => c.data === name)?.value || -1,
       timestamp: Date.now(),
-      minutes: times.find((c) => c.label === time.text)?.value || -1,
+      minutes: times.find((c) => c.data === minutes)?.value || -1,
       done: false,
     };
+
+    conversation.log(data);
 
     await conversation.external(() =>
       axios.post(url, data).catch((error) => {
@@ -70,8 +78,6 @@ export async function coffeeConversation(
       }),
     );
 
-    await ctx.reply(message, {
-      reply_markup: { remove_keyboard: true },
-    });
+    await ctx.reply(message);
   }
 }
