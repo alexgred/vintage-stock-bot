@@ -5,9 +5,9 @@ const startComposer = new Composer<BotContext>();
 
 startComposer.command('start', async (ctx) => {
   const message =
-    '<strong>Привет!</strong>\n\nЯ бот Архив. Наш магазин находиться по адресу: <i><a href="https://yandex.ru/maps/-/CDwffQ0f">Горького 123</a></i>.\n\nСкоро здесь будет много всего интересного, а сейчас ты можешь заказать кофе, пока идешь к нам.';
+    '<strong>Привет!</strong>\n\nЯ бот Архив. Наш магазин находиться по адресу: <i><a href="https://yandex.ru/maps/-/CDwffQ0f">Горького 123</a></i>.\n\nСкоро здесь будет много всего интересного, а сейчас ты можешь заказать напиток, пока идешь к нам.';
 
-  const button = new InlineKeyboard().text('Заказать кофе', 'coffee');
+  const button = new InlineKeyboard().text('Заказать напиток', 'coffee');
 
   await ctx.reply(message, {
     parse_mode: 'HTML',

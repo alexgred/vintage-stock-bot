@@ -1,5 +1,6 @@
 import { Composer, InlineKeyboard } from 'grammy';
 import { BotContext } from '@/types';
+import { orderChoice } from '@/utils';
 
 const callbackComposer = new Composer<BotContext>();
 
@@ -29,7 +30,20 @@ callbackComposer.callbackQuery('address', async (ctx) => {
 });
 
 callbackComposer.callbackQuery('coffee', async (ctx) => {
-  await ctx.answerCallbackQuery({ text: 'Выберите кофе' });
+  await ctx.answerCallbackQuery();
+
+  await orderChoice(ctx);
+});
+
+callbackComposer.callbackQuery('coffee-to-go', async (ctx) => {
+  await ctx.conversation.exit();
+  await ctx.answerCallbackQuery();
+  await ctx.conversation.enter('coffeeConversation');
+});
+
+callbackComposer.callbackQuery('coffee-to-site', async (ctx) => {
+  await ctx.conversation.exit();
+  await ctx.answerCallbackQuery();
   await ctx.conversation.enter('coffeeConversation');
 });
 

@@ -1,6 +1,6 @@
 {
   "url": "https://vintage-stock-coffee.vercel.app/api/orders/add",
-  "coffees": [
+  "drinks": [
     {
       "id": 1,
       "label": "Раф",

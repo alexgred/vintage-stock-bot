@@ -1,5 +1,5 @@
 import { Bot, GrammyError, HttpError, session } from 'grammy';
-import { helpComposer, startComposer, callbackComposer, coffeeComposer, conversationCallbackComposer } from '@/composers';
+import { helpComposer, startComposer, callbackComposer, orderComposer, conversationCallbackComposer } from '@/composers';
 import { BotContext, notificationOther, Config } from '@/types';
 import { conversations, createConversation } from '@grammyjs/conversations';
 import { coffeeConversation } from '@/conversations';
@@ -10,15 +10,15 @@ export class VintageStockBot {
   private readonly commands = [
     {
       command: '/start',
-      description: 'Start the bot',
+      description: 'Запустить бота',
     },
     {
       command: '/help',
-      description: 'Get help',
+      description: 'Помощь',
     },
     {
-      command: '/coffee',
-      description: 'Order coffee',
+      command: '/order',
+      description: 'Заказать напиток',
     },
   ];
 
@@ -47,7 +47,7 @@ export class VintageStockBot {
   private setCommands(): void {
     this.bot.use(startComposer);
     this.bot.use(helpComposer);
-    this.bot.use(coffeeComposer);
+    this.bot.use(orderComposer);
   }
 
   public async sendNotification(

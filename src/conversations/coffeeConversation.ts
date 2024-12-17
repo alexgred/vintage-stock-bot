@@ -1,33 +1,33 @@
 import { BotContext, BotConversation, Order } from '@/types';
 import axios from 'axios';
 import { InlineKeyboard } from 'grammy';
-import { coffees, times, url } from '../config';
+import { drinks, times, url } from '../config';
 
 export async function coffeeConversation(
   conversation: BotConversation,
   ctx: BotContext,
 ) {
-  const buttonsCoffee = new InlineKeyboard();
-  coffees.forEach((coffee) => {
-    buttonsCoffee.text(coffee.label, coffee.data);
+  const buttonsDrink = new InlineKeyboard();
+  drinks.forEach((drink) => {
+    buttonsDrink.text(drink.label, drink.data);
   });
-  buttonsCoffee.text('Отмена', 'cancel');
-  const keyboardCoffee = buttonsCoffee.toFlowed(2);
-  await ctx.reply('Какой вам кофе?', {
+  buttonsDrink.text('Отмена', 'cancel');
+  const keyboardCoffee = buttonsDrink.toFlowed(2);
+
+  await ctx.reply('Какой вам напиток?', {
     reply_markup: keyboardCoffee,
   });
 
-  const { callbackQuery: coffee }  = await conversation.waitForCallbackQuery(
-    coffees.map((coffee) => coffee.data),
+  const { callbackQuery: drink }  = await conversation.waitForCallbackQuery(
+    drinks.map((drink) => drink.data),
     {
       drop: true,
       otherwise: async (ctx) => {
-        return ctx.reply('Вы не выбрали какой вам кофе.', {
-          reply_markup: keyboardCoffee,
-        });
+        return ctx.reply('Вы не выбрали какой вам напиток.');
       },
     },
   );
+  const name = drinks.find((c) => c.data === drink.data)?.label;
 
   const buttonsTime = new InlineKeyboard();
   times.forEach((time) => {
@@ -35,45 +35,46 @@ export async function coffeeConversation(
   });
   buttonsTime.text('Отмена', 'cancel');
   const keyboardTime = buttonsTime.toFlowed(2);
-  await ctx.reply('Через сколько вы будет?', {
+
+  let messageOrder = `\n\n<i>Напиток: ${name}</i>`;
+  await ctx.reply(`Через сколько вы будет?${messageOrder}`, {
     reply_markup: keyboardTime,
+    parse_mode: 'HTML',
   });
+  if (drink.message) {
+    await ctx.deleteMessages([drink.message.message_id]);
+  }
 
   const { callbackQuery: time } = await conversation.waitForCallbackQuery(
     times.map((time) => time.data),
     {
       drop: true,
       otherwise:(ctx) => {
-        return ctx.reply('Вы не указали через сколько вы будет?', {
-          reply_markup: keyboardTime,
-        });
+        return ctx.reply('Вы не указали через сколько вы будет?');
       }
     },
   );
-
-  const name = coffees.find((c) => c.data === coffee.data)?.label;
   const minutes = times.find((c) => c.data === time.data)?.label;
 
   let message = '';
+  messageOrder = `${messageOrder}\n<i>Время: ${minutes}</i>`;
   if (minutes === 'Я в магазине') {
-    message = `Готовим ваш ${name?.toLocaleLowerCase()}. Пришлем уведомление, когда он будет готов.`;
+    message = `Готовим ваш ${name?.toLocaleLowerCase()}. Пришлем уведомление, когда он будет готов.${messageOrder}`;
   } else {
-    message = `Ваш ${name?.toLocaleLowerCase()} будет готов через ${minutes}. Спасибо ждем вас!`;
+    message = `Ваш ${name?.toLocaleLowerCase()} будет готов через ${minutes}. Спасибо ждем вас!${messageOrder}`;
   }
 
-  if (coffee.message && time?.message && name) {
+  if (drink.message && time?.message && name) {
     const data: Order = {
-      id: coffee.message.date + time.message.date,
+      id: drink.message.date + time.message.date,
       name: name,
       userId: ctx.from?.id as number,
-      user: coffee.from.username,
-      price: coffees.find((c) => c.data === name)?.value || -1,
+      user: drink.from.username,
+      price: drinks.find((c) => c.data === name)?.value || -1,
       timestamp: await conversation.now(),
       minutes: times.find((c) => c.data === minutes)?.value || -1,
       done: false,
     };
-
-    conversation.log(data);
 
     await conversation.external(() =>
       axios.post(url, data).catch((error) => {
@@ -81,6 +82,11 @@ export async function coffeeConversation(
       }),
     );
 
-    await ctx.reply(message);
+    await ctx.reply(message, {
+      parse_mode: 'HTML',
+    });
+    if (time.message) {
+      await ctx.deleteMessages([time.message.message_id]);
+    }
   }
 }
