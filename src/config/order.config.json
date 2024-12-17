@@ -3,27 +3,39 @@
   "drinks": [
     {
       "id": 1,
-      "label": "Раф",
-      "value": 100,
-      "data": "raf"
+      "label": "Капучино 240мл",
+      "value": 200,
+      "data": "cappuccino-240"
     },
     {
       "id": 2,
-      "label": "Капучино",
-      "value": 200,
-      "data": "cappuccino"
+      "label": "Капучино 340мл",
+      "value": 250,
+      "data": "cappuccino-340"
     },
     {
       "id": 3,
-      "label": "Латте",
-      "value": 300,
-      "data": "latte"
+      "label": "Флэт",
+      "value": 250,
+      "data": "flat"
     },
     {
       "id": 4,
-      "label": "Американо",
-      "value": 400,
-      "data": "americano"
+      "label": "Фильтр",
+      "value": 150,
+      "data": "filter"
+    },
+    {
+      "id": 5,
+      "label": "Фильтр v60",
+      "value": 300,
+      "data": "filter-v60"
+    },
+    {
+      "id": 6,
+      "label": "Воронка эмиссионная",
+      "value": 350,
+      "data": "voronka"
     }
   ],
   "times": [

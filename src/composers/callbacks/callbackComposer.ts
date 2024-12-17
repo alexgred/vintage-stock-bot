@@ -6,7 +6,7 @@ const callbackComposer = new Composer<BotContext>();
 
 callbackComposer.callbackQuery('commands', async (ctx) => {
   const message =
-    '<strong>Команды:</strong>\n\n<i>/start</i> - запустить бота\n<i>/help</i> - помощь\n<i>/address</i> - адрес\n<i>/coffee</i> - заказать кофе';
+    '<strong>Команды:</strong>\n\n<i>/start</i> - запустить бота\n<i>/help</i> - помощь\n<i>/address</i> - адрес\n<i>/coffee</i> - заказать напиток';
 
   await ctx.answerCallbackQuery();
   await ctx.reply(message, {

@@ -10,7 +10,7 @@ helpComposer.command('help', async (ctx) => {
   const keyboard = new InlineKeyboard();
   keyboard.text('Команды', 'commands');
   keyboard.text('Адрес', 'address');
-  keyboard.text('Как заказать кофе?', 'coffee');
+  keyboard.text('Заказать напиток?', 'coffee');
 
   await ctx.reply(message, {
     reply_markup: keyboard.toFlowed(2),
