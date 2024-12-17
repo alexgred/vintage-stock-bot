@@ -63,5 +63,63 @@
       "value": 45,
       "data": "time-45"
     }
+  ],
+  "milk": [
+    {
+      "id": 1,
+      "label": "Обычное",
+      "value": 0,
+      "data": "milk-default"
+    },
+    {
+      "id": 2,
+      "label": "Кокосовое",
+      "value": 30,
+      "data": "milk-coconut"
+    },
+    {
+      "id": 3,
+      "label": "Банановое",
+      "value": 30,
+      "data": "milk-banana"
+    },
+    {
+      "id": 4,
+      "label": "Безлактозное",
+      "value": 20,
+      "data": "milk-lactose-free"
+    }
+  ],
+  "filters": [
+    {
+      "id": 1,
+      "label": "Коста Рика",
+      "value": 0,
+      "data": "filters-costa"
+    },
+    {
+      "id": 2,
+      "label": "Колумбия",
+      "value": 0,
+      "data": "filters-columbia"
+    },
+    {
+      "id": 3,
+      "label": "Индонезия",
+      "value": 0,
+      "data": "filters-indonesia"
+    },
+    {
+      "id": 4,
+      "label": "Кения",
+      "value": 0,
+      "data": "filters-kenya"
+    },
+    {
+      "id": 5,
+      "label": "Эфиопия",
+      "value": 0,
+      "data": "filters-ethiopia"
+    }
   ]
 }
