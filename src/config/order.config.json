@@ -1,5 +1,5 @@
 {
-  "url": "https://vintage-stock-coffee.vercel.app/api/orders/add",
+  "url": "http://localhost:3000/api/orders/add",
   "drinks": [
     {
       "id": 1,

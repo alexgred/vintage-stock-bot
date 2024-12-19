@@ -2,6 +2,7 @@ import { BotContext, BotConversation, Order } from '@/types';
 import axios from 'axios';
 import { InlineKeyboard } from 'grammy';
 import { drinks, times, url } from '../config';
+import { checkZero } from '@/utils';
 
 export async function coffeeConversation(
   conversation: BotConversation,
@@ -70,11 +71,14 @@ export async function coffeeConversation(
       name: name,
       userId: ctx.from?.id as number,
       user: drink.from.username,
-      price: drinks.find((c) => c.data === name)?.value || -1,
+      price: checkZero(drinks.find((c) => c.label === name)?.value),
       timestamp: await conversation.now(),
-      minutes: times.find((c) => c.data === minutes)?.value || -1,
+      minutes: checkZero(times.find((c) => c.label === minutes)?.value),
+      spot: true,
       done: false,
     };
+
+    console.log(data);
 
     await conversation.external(() =>
       axios.post(url, data).catch((error) => {

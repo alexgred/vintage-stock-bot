@@ -15,5 +15,8 @@ export interface Order {
   price: number;
   timestamp: number;
   minutes: number;
+  spot: boolean;
   done: boolean;
 }
+
+export type Zero = number | undefined;
