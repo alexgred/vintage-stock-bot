@@ -20,3 +20,5 @@ export interface Order {
 }
 
 export type Zero = number | undefined;
+
+export type NotUndefined = string | number | boolean | object;

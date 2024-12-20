@@ -15,24 +15,36 @@
     },
     {
       "id": 3,
+      "label": "Латте 340мл",
+      "value": 200,
+      "data": "latte-340"
+    },
+    {
+      "id": 4,
+      "label": "Латте 440мл",
+      "value": 250,
+      "data": "latte-340"
+    },
+    {
+      "id": 5,
       "label": "Флэт",
       "value": 250,
       "data": "flat"
     },
     {
-      "id": 4,
+      "id": 6,
       "label": "Фильтр",
       "value": 150,
       "data": "filter"
     },
     {
-      "id": 5,
+      "id": 7,
       "label": "Фильтр v60",
       "value": 300,
       "data": "filter-v60"
     },
     {
-      "id": 6,
+      "id": 8,
       "label": "Воронка эмиссионная",
       "value": 350,
       "data": "voronka"
